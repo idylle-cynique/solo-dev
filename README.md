@@ -16,13 +16,15 @@
 ### 前提条件
 
 - Node.js（npx コマンドが使用可能であること）
-- このリポジトリがローカルにクローンされていること
+- このリポジトリへのアクセス権限があるか、ローカルにクローンされていること
+
+### 新規プロジェクトへの導入
+
+ローカルクローンを使用する場合（初回のみ）：
 
 ```bash
 git clone https://github.com/idylle-cynique/self-dev-facilitation.git ~/github/self-dev-facilitation
 ```
-
-### 新規プロジェクトへの導入
 
 プロジェクトのルートディレクトリで以下を実行：
 
