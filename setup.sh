@@ -4,7 +4,7 @@
 set -e
 
 TOOLS_DIR=".dev-tools"
-REPO="idylle-cynique/self-dev-facilitation"
+REPO="idylle-cynique/self-dev-facilitation#feature/20/kaizen-intro-and-update"
 
 echo "🚀 Self Dev Facilitation をセットアップしています..."
 
