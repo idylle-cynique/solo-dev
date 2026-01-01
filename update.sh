@@ -1,5 +1,5 @@
 #!/bin/bash
-# Self Dev Facilitation 更新スクリプト (degit版)
+# Self Dev Facilitation 更新スクリプト
 
 set -e
 
@@ -8,8 +8,8 @@ REPO="idylle-cynique/self-dev-facilitation"
 
 echo "🔄 Self Dev Facilitation を更新しています..."
 
-# degit で強制上書き
-npx degit "$REPO" "$TOOLS_DIR" --force
+# tiged で強制上書き
+npx tiged "$REPO" "$TOOLS_DIR" --force
 
 # Git hooks を再インストール
 if [ -f "$TOOLS_DIR/utils/git/install-hooks.sh" ]; then

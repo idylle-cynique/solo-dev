@@ -1,5 +1,5 @@
 #!/bin/bash
-# Self Dev Facilitation セットアップスクリプト (degit版)
+# Self Dev Facilitation セットアップスクリプト
 
 set -e
 
@@ -8,9 +8,9 @@ REPO="idylle-cynique/self-dev-facilitation"
 
 echo "🚀 Self Dev Facilitation をセットアップしています..."
 
-# 1. degit でファイルを取得
+# 1. tiged でファイルを取得
 echo "📦 ファイルを取得中..."
-npx degit "$REPO" "$TOOLS_DIR"
+npx tiged "$REPO" "$TOOLS_DIR"
 
 # 2. 必要なディレクトリを作成
 mkdir -p .github
@@ -56,5 +56,5 @@ echo "✅ セットアップ完了！"
 echo ""
 echo "📌 次のステップ:"
 echo "  - 更新: bash .dev-tools/update.sh を実行"
-echo "  - または: npx degit $REPO .dev-tools --force"
+echo "  - または: npx tiged $REPO .dev-tools --force"
 echo ""
