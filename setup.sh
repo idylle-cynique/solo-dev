@@ -32,24 +32,32 @@ ln -sf $TOOLS_DIR/.pylintrc .pylintrc 2>/dev/null || true
 
 # 4. .gitignore に追加
 echo "  - .gitignore を更新..."
-if [ -f .gitignore ]; then
-    grep -q "^# Self Dev Facilitation" .gitignore || cat >> .gitignore << 'EOF'
 
-# Self Dev Facilitation
-.dev-tools/
-.pylintrc
-.github/ISSUE_TEMPLATE
-.github/PULL_REQUEST_TEMPLATE
-EOF
-else
-    cat > .gitignore << 'EOF'
-# Self Dev Facilitation
-.dev-tools/
-.pylintrc
-.github/ISSUE_TEMPLATE
-.github/PULL_REQUEST_TEMPLATE
-EOF
+# .gitignore が存在しない場合は作成
+if [ ! -f .gitignore ]; then
+    touch .gitignore
 fi
+
+# 除外対象のエントリ
+ENTRIES=(
+    ".dev-tools/"
+    ".pylintrc"
+    ".github/ISSUE_TEMPLATE"
+    ".github/PULL_REQUEST_TEMPLATE"
+)
+
+# コメント行を追加（まだなければ）
+if ! grep -q "^# Self Dev Facilitation" .gitignore; then
+    echo "" >> .gitignore
+    echo "# Self Dev Facilitation" >> .gitignore
+fi
+
+# 各エントリを確認して追加
+for entry in "${ENTRIES[@]}"; do
+    if ! grep -qF "$entry" .gitignore; then
+        echo "$entry" >> .gitignore
+    fi
+done
 
 echo ""
 echo "==> セットアップ完了"
