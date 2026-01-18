@@ -1,14 +1,5 @@
 ---
 name: New Feature
-about: When impletement a new feature
-title: ''
-labels: ''
-assignees: ''
-
----
-
----
-name: 機能追加・タスク
 about: 新機能の追加や改善タスクを管理するためのテンプレート
 title: ''
 labels: enhancement
@@ -29,15 +20,15 @@ assignees: ''
 
 ## タスク
 <!-- 作業を分解してチェックリスト化 -->
-- [ ] 
-- [ ] 
-- [ ] 
+- [ ]
+- [ ]
+- [ ]
 
 
 ## 完了条件
 <!-- どの状態になれば完了とみなすか -->
-- [ ] 
-- [ ] 
+- [ ]
+- [ ]
 
 
 ## 技術メモ
