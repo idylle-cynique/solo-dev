@@ -15,20 +15,56 @@ npx tiged "$REPO" "$TOOLS_DIR"
 # 2. 必要なディレクトリを作成
 mkdir -p .github
 
-# 3. シンボリックリンクを作成
-echo "  - シンボリックリンクを作成..."
+# 3. ファイルをコピー
+echo "  - ファイルをコピー..."
 
-# GitHub templates
-ln -sf ../$TOOLS_DIR/.github/ISSUE_TEMPLATE .github/ISSUE_TEMPLATE 2>/dev/null || true
-ln -sf ../$TOOLS_DIR/.github/PULL_REQUEST_TEMPLATE .github/PULL_REQUEST_TEMPLATE 2>/dev/null || true
+# GitHub Issue Templates
+if [ -d "$TOOLS_DIR/.github/ISSUE_TEMPLATE" ]; then
+    # Remove existing ISSUE_TEMPLATE if it's a symlink or file (not directory)
+    if [ -L ".github/ISSUE_TEMPLATE" ] || [ -f ".github/ISSUE_TEMPLATE" ]; then
+        rm -f .github/ISSUE_TEMPLATE
+    fi
+
+    # Create directory if it doesn't exist
+    mkdir -p .github/ISSUE_TEMPLATE
+
+    # Copy all template files
+    cp -f "$TOOLS_DIR/.github/ISSUE_TEMPLATE/"*.md .github/ISSUE_TEMPLATE/ 2>/dev/null || true
+    echo "    ✓ Issue templates copied"
+else
+    echo "    ⚠ Issue templates not found in $TOOLS_DIR"
+fi
+
+# GitHub Pull Request Template
+if [ -f "$TOOLS_DIR/.github/PULL_REQUEST_TEMPLATE.md" ]; then
+    # Remove existing PULL_REQUEST_TEMPLATE if it's a symlink or directory
+    if [ -L ".github/PULL_REQUEST_TEMPLATE" ] || [ -d ".github/PULL_REQUEST_TEMPLATE" ]; then
+        rm -rf .github/PULL_REQUEST_TEMPLATE
+    fi
+
+    cp -f "$TOOLS_DIR/.github/PULL_REQUEST_TEMPLATE.md" .github/PULL_REQUEST_TEMPLATE.md
+    echo "    ✓ Pull request template copied"
+else
+    echo "    ⚠ Pull request template not found in $TOOLS_DIR"
+fi
 
 # Git hooks
 if [ -f "$TOOLS_DIR/utils/git/install-hooks.sh" ]; then
     bash "$TOOLS_DIR/utils/git/install-hooks.sh"
 fi
 
-# 設定ファイル
-ln -sf $TOOLS_DIR/.pylintrc .pylintrc 2>/dev/null || true
+# 設定ファイル (.pylintrc)
+if [ -f "$TOOLS_DIR/.pylintrc" ]; then
+    # Remove if it's a symlink
+    if [ -L ".pylintrc" ]; then
+        rm -f .pylintrc
+    fi
+
+    cp -f "$TOOLS_DIR/.pylintrc" .pylintrc
+    echo "    ✓ .pylintrc copied"
+else
+    echo "    ⚠ .pylintrc not found in $TOOLS_DIR"
+fi
 
 # 4. .gitignore に追加
 echo "  - .gitignore を更新..."
@@ -42,8 +78,8 @@ fi
 ENTRIES=(
     ".dev-tools/"
     ".pylintrc"
-    ".github/ISSUE_TEMPLATE"
-    ".github/PULL_REQUEST_TEMPLATE"
+    ".github/ISSUE_TEMPLATE/"
+    ".github/PULL_REQUEST_TEMPLATE.md"
 )
 
 # コメント行を追加（まだなければ）
