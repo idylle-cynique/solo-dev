@@ -16,9 +16,10 @@ echo "  - テンプレートと設定ファイルを更新..."
 
 # GitHub Issue Templates
 if [ -d "$TOOLS_DIR/.github/ISSUE_TEMPLATE" ]; then
-    # Remove existing ISSUE_TEMPLATE if it's a symlink or file (not directory)
-    if [ -L ".github/ISSUE_TEMPLATE" ] || [ -f ".github/ISSUE_TEMPLATE" ]; then
-        rm -f .github/ISSUE_TEMPLATE
+    # Remove existing ISSUE_TEMPLATE completely (symlink, file, or directory)
+    # This ensures deleted/renamed templates are also removed from local
+    if [ -e ".github/ISSUE_TEMPLATE" ] || [ -L ".github/ISSUE_TEMPLATE" ]; then
+        rm -rf .github/ISSUE_TEMPLATE
     fi
 
     mkdir -p .github/ISSUE_TEMPLATE
