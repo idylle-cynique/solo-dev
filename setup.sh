@@ -20,30 +20,39 @@ echo "  - ファイルをコピー..."
 
 # GitHub Issue Templates
 if [ -d "$TOOLS_DIR/.github/ISSUE_TEMPLATE" ]; then
-    # Remove existing ISSUE_TEMPLATE completely (symlink, file, or directory)
-    # This ensures deleted/renamed templates are also removed from local
-    if [ -e ".github/ISSUE_TEMPLATE" ] || [ -L ".github/ISSUE_TEMPLATE" ]; then
-        rm -rf .github/ISSUE_TEMPLATE
-    fi
-
-    # Create fresh directory
+    # Create directory if it doesn't exist
     mkdir -p .github/ISSUE_TEMPLATE
 
-    # Copy all template files
-    cp -f "$TOOLS_DIR/.github/ISSUE_TEMPLATE/"*.md .github/ISSUE_TEMPLATE/ 2>/dev/null || true
-    echo "    ✓ Issue templates copied"
+    # Remove only managed templates (preserve custom user templates)
+    if compgen -G ".github/ISSUE_TEMPLATE/SOLODEV_*.md" > /dev/null 2>&1; then
+        rm -f .github/ISSUE_TEMPLATE/SOLODEV_*.md
+        echo "    Removed old managed issue templates"
+    fi
+
+    # Copy all managed template files from source
+    if compgen -G "$TOOLS_DIR/.github/ISSUE_TEMPLATE/SOLODEV_*.md" > /dev/null 2>&1; then
+        cp -f "$TOOLS_DIR/.github/ISSUE_TEMPLATE/"SOLODEV_*.md .github/ISSUE_TEMPLATE/ 2>/dev/null || true
+        echo "    ✓ Issue templates copied (custom templates preserved)"
+    else
+        echo "    ⚠ No managed templates found in $TOOLS_DIR"
+    fi
 else
-    echo "    ⚠ Issue templates not found in $TOOLS_DIR"
+    echo "    ⚠ Issue templates directory not found in $TOOLS_DIR"
 fi
 
 # GitHub Pull Request Template
-if [ -f "$TOOLS_DIR/.github/PULL_REQUEST_TEMPLATE.md" ]; then
-    # Remove existing PULL_REQUEST_TEMPLATE if it's a symlink or directory
+if [ -f "$TOOLS_DIR/.github/SOLODEV_PULL_REQUEST_TEMPLATE.md" ]; then
+    # Remove existing managed PR template
+    if [ -f ".github/SOLODEV_PULL_REQUEST_TEMPLATE.md" ]; then
+        rm -f .github/SOLODEV_PULL_REQUEST_TEMPLATE.md
+    fi
+
+    # Remove old non-prefixed version if it's a symlink or directory (cleanup)
     if [ -L ".github/PULL_REQUEST_TEMPLATE" ] || [ -d ".github/PULL_REQUEST_TEMPLATE" ]; then
         rm -rf .github/PULL_REQUEST_TEMPLATE
     fi
 
-    cp -f "$TOOLS_DIR/.github/PULL_REQUEST_TEMPLATE.md" .github/PULL_REQUEST_TEMPLATE.md
+    cp -f "$TOOLS_DIR/.github/SOLODEV_PULL_REQUEST_TEMPLATE.md" .github/SOLODEV_PULL_REQUEST_TEMPLATE.md
     echo "    ✓ Pull request template copied"
 else
     echo "    ⚠ Pull request template not found in $TOOLS_DIR"
@@ -79,8 +88,8 @@ fi
 ENTRIES=(
     ".dev-tools/"
     ".pylintrc"
-    ".github/ISSUE_TEMPLATE/"
-    ".github/PULL_REQUEST_TEMPLATE.md"
+    ".github/ISSUE_TEMPLATE/SOLODEV_*.md"
+    ".github/SOLODEV_PULL_REQUEST_TEMPLATE.md"
 )
 
 # コメント行を追加（まだなければ）

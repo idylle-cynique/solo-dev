@@ -58,12 +58,22 @@ bash .dev-tools/utils/git/install-hooks.sh
 
 導入後、以下のファイルがコピーされます：
 
-- `.github/ISSUE_TEMPLATE/*.md` ← `.dev-tools/.github/ISSUE_TEMPLATE/`
-- `.github/PULL_REQUEST_TEMPLATE.md` ← `.dev-tools/.github/PULL_REQUEST_TEMPLATE.md`
+- `.github/ISSUE_TEMPLATE/SOLODEV_*.md` ← `.dev-tools/.github/ISSUE_TEMPLATE/`
+- `.github/SOLODEV_PULL_REQUEST_TEMPLATE.md` ← `.dev-tools/.github/SOLODEV_PULL_REQUEST_TEMPLATE.md`
 - `.pylintrc` ← `.dev-tools/.pylintrc`
 - `.git/hooks/pre-push` ← Git フック
 
 これらは `.gitignore` で除外されるため、**リポジトリにコミットされません**。
+
+## 管理テンプレート
+
+このツールによって管理されるテンプレートは `SOLODEV_` プレフィックスが付いています:
+
+- `.github/ISSUE_TEMPLATE/SOLODEV_bug-fix.md`
+- `.github/ISSUE_TEMPLATE/SOLODEV_new-feature.md`
+- `.github/SOLODEV_PULL_REQUEST_TEMPLATE.md`
+
+これらのテンプレートは更新時に自動的に上書きされます。
 
 ## 仕組み
 
