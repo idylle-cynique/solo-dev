@@ -65,9 +65,7 @@ bash .dev-tools/utils/git/install-hooks.sh
 
 これらは `.gitignore` で除外されるため、**リポジトリにコミットされません**。
 
-## 管理テンプレートとカスタムテンプレート
-
-### 管理されるテンプレート (Managed Templates)
+## 管理テンプレート
 
 このツールによって管理されるテンプレートは `SOLODEV_` プレフィックスが付いています:
 
@@ -76,42 +74,6 @@ bash .dev-tools/utils/git/install-hooks.sh
 - `.github/SOLODEV_PULL_REQUEST_TEMPLATE.md`
 
 これらのテンプレートは更新時に自動的に上書きされます。
-
-### カスタムテンプレート (Custom Templates)
-
-プレフィックスなしのテンプレートはカスタムテンプレートとして扱われ、更新時に削除されません:
-
-```bash
-# カスタムテンプレートの例
-.github/ISSUE_TEMPLATE/custom-workflow.md
-.github/ISSUE_TEMPLATE/documentation-update.md
-```
-
-カスタムテンプレートを追加するには:
-
-1. `.github/ISSUE_TEMPLATE/` に新しい `.md` ファイルを作成
-2. ファイル名に `SOLODEV_` プレフィックスを**付けない**
-3. YAML frontmatter を含める (name, about, title, labels など)
-
-例:
-
-```markdown
----
-name: カスタムワークフロー
-about: プロジェクト固有のワークフロー用テンプレート
-title: ''
-labels: workflow
-assignees: ''
----
-
-## 内容
-<!-- テンプレートの内容 -->
-```
-
-### 注意事項
-
-- `SOLODEV_` プレフィックス付きテンプレートは編集しないでください (更新時に上書きされます)
-- カスタムテンプレートをバージョン管理に含めたい場合は、コミット可能です (`.gitignore` で除外されません)
 
 ## 仕組み
 
