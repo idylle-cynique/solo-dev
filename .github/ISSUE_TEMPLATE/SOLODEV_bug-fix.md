@@ -1,7 +1,7 @@
 ---
 name: バグ報告・修正
 about: バグや不具合の報告と修正タスクを管理するためのテンプレート
-title: ''
+title: 'bug: '
 labels: bug
 assignees: ''
 ---
