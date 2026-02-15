@@ -1,7 +1,7 @@
 ---
 name: New Feature
 about: 新機能の追加や改善タスクを管理するためのテンプレート
-title: ''
+title: 'feat: '
 labels: enhancement
 assignees: ''
 ---
