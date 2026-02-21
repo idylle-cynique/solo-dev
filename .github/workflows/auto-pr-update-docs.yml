@@ -5,6 +5,10 @@ on:
     branches:
       - update-solo-dev-docs
 
+concurrency:
+  group: update-docs-pr
+  cancel-in-progress: true
+
 jobs:
   create-pr:
     runs-on: ubuntu-latest
