@@ -28,27 +28,27 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Update PR body and title if PR already exists
-        if: steps.pr.outputs.pr_exists == 'true' && steps.pr.outputs.pr_number != ''
+      - name: Generate commit log
+        id: commits
         run: |
-          PR_NUMBER="${{ steps.pr.outputs.pr_number }}"
-          git fetch origin main --unshallow || git fetch origin main
+          git fetch origin main --depth=50
           COMMITS=$(git log origin/main..HEAD --pretty=format:'- [%h](https://github.com/${{ github.repository }}/commit/%H) %s (%an)' --reverse)
-          BODY="## Commit Logs\n\n$COMMITS"
-          echo -e "$BODY" > body.txt
-          gh pr edit $PR_NUMBER --title "docs: Update SoloDev Documentation" --body-file body.txt
-          echo "[LOG] Updated existing PR #$PR_NUMBER"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          {
+            echo "BODY<<EOF"
+            echo "## Commit Logs"
+            echo ""
+            echo "$COMMITS"
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
 
-      - name: Create PR if no PR exists
-        if: steps.pr.outputs.pr_exists == 'false'
+      - name: Update or Create PR
         run: |
-          git fetch origin main --unshallow || git fetch origin main
-          COMMITS=$(git log origin/main..HEAD --pretty=format:'- [%h](https://github.com/${{ github.repository }}/commit/%H) %s (%an)' --reverse)
-          BODY="## Commit Logs\n\n$COMMITS"
-          echo -e "$BODY" > body.txt
-          gh pr create --base main --head ${{ github.ref_name }} --title "docs: Update SoloDev Documentation" --body-file body.txt
-          echo "[LOG] Created new PR"
+          if [ "${{ steps.pr.outputs.pr_exists }}" == "true" ]; then
+            gh pr edit ${{ steps.pr.outputs.pr_number }} --title "docs: Update SoloDev Documentation" --body "${{ steps.commits.outputs.BODY }}"
+            echo "[LOG] Updated existing PR #${{ steps.pr.outputs.pr_number }}"
+          else
+            gh pr create --base main --head ${{ github.ref_name }} --title "docs: Update SoloDev Documentation" --body "${{ steps.commits.outputs.BODY }}"
+            echo "[LOG] Created new PR"
+          fi
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
