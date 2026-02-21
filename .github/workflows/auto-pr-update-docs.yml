@@ -11,14 +11,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up GitHub CLI
-        run: sudo apt-get install gh
-
       - name: Check for existing PR
         id: pr
         run: |
-          gh pr list --base main --head ${{ github.ref_name }} --json number --jq '.[0].number' > pr_number.txt
-          PR_NUMBER=$(cat pr_number.txt | tr -d '\n')
+          PR_NUMBER=$(gh pr list --base main --head ${{ github.ref_name }} --json number --jq '.[0].number' | tr -d '\n')
           if [ -n "$PR_NUMBER" ]; then
             echo "pr_exists=true" | tee -a $GITHUB_OUTPUT
             echo "pr_number=$PR_NUMBER" | tee -a $GITHUB_OUTPUT
