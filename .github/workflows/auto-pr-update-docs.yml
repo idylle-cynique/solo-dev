@@ -1,0 +1,58 @@
+name: auto-pr-update-docs
+
+on:
+  push:
+    branches:
+      - update-solo-dev-docs
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up GitHub CLI
+        run: sudo apt-get install gh
+
+      - name: Check for existing PR
+        id: pr
+        run: |
+          gh pr list --base main --head ${{ github.ref_name }} --json number --jq '.[0].number' > pr_number.txt
+          PR_NUMBER=$(cat pr_number.txt | tr -d '\n')
+          if [ -n "$PR_NUMBER" ]; then
+            echo "pr_exists=true" | tee -a $GITHUB_OUTPUT
+            echo "pr_number=$PR_NUMBER" | tee -a $GITHUB_OUTPUT
+          else
+            echo "pr_exists=false" | tee -a $GITHUB_OUTPUT
+            echo "pr_number=" | tee -a $GITHUB_OUTPUT
+          fi
+          # 出力値をログにも明示
+          echo "[LOG] pr_exists=$(if [ -n \"$PR_NUMBER\" ]; then echo true; else echo false; fi)"
+          echo "[LOG] pr_number=$PR_NUMBER"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update PR body and title if PR already exists
+        if: steps.pr.outputs.pr_exists == 'true' && steps.pr.outputs.pr_number != ''
+        run: |
+          PR_NUMBER="${{ steps.pr.outputs.pr_number }}"
+          git fetch origin main --unshallow || git fetch origin main
+          COMMITS=$(git log origin/main..HEAD --pretty=format:'- [%h](https://github.com/${{ github.repository }}/commit/%H) %s (%an)' --reverse)
+          BODY="## Commit Logs\n\n$COMMITS"
+          echo -e "$BODY" > body.txt
+          gh pr edit $PR_NUMBER --title "docs: Update solo dev documentation" --body-file body.txt
+          echo "[LOG] Updated existing PR #$PR_NUMBER"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create PR if no PR exists
+        if: steps.pr.outputs.pr_exists == 'false'
+        run: |
+          git fetch origin main --unshallow || git fetch origin main
+          COMMITS=$(git log origin/main..HEAD --pretty=format:'- [%h](https://github.com/${{ github.repository }}/commit/%H) %s (%an)' --reverse)
+          BODY="## Commit Logs\n\n$COMMITS"
+          echo -e "$BODY" > body.txt
+          gh pr create --base main --head ${{ github.ref_name }} --title "docs: Update solo dev documentation" --body-file body.txt
+          echo "[LOG] Created new PR"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
