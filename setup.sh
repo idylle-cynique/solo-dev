@@ -60,8 +60,10 @@ fi
 
 # GitHub Workflows
 if [ -f "$TOOLS_DIR/.github/workflows/auto-pr-update-docs.yml" ]; then
-    mkdir -p .github/workflows
-    cp -f "$TOOLS_DIR/.github/workflows/auto-pr-update-docs.yml" .github/workflows/auto-pr-update-docs.yml
+    mkdir -p .github/workflows || { echo "    ✗ ワークフローディレクトリの作成に失敗"; exit 1; }
+    cp -f "$TOOLS_DIR/.github/workflows/auto-pr-update-docs.yml" .github/workflows/auto-pr-update-docs.yml || {
+        echo "    ✗ ワークフローファイルのコピーに失敗"; exit 1;
+    }
     echo "    ✓ Workflow auto-pr-update-docs.yml copied"
 else
     echo "    ⚠ Workflow auto-pr-update-docs.yml not found in $TOOLS_DIR"
