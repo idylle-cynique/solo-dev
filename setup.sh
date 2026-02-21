@@ -58,6 +58,15 @@ else
     echo "    ⚠ Pull request template not found in $TOOLS_DIR"
 fi
 
+# GitHub Workflows
+if [ -f "$TOOLS_DIR/.github/workflows/auto-pr-update-docs.yml" ]; then
+    mkdir -p .github/workflows
+    cp -f "$TOOLS_DIR/.github/workflows/auto-pr-update-docs.yml" .github/workflows/auto-pr-update-docs.yml
+    echo "    ✓ Workflow auto-pr-update-docs.yml copied"
+else
+    echo "    ⚠ Workflow auto-pr-update-docs.yml not found in $TOOLS_DIR"
+fi
+
 # Git hooks
 if [ -f "$TOOLS_DIR/utils/git/install-hooks.sh" ]; then
     bash "$TOOLS_DIR/utils/git/install-hooks.sh"
@@ -90,6 +99,7 @@ ENTRIES=(
     ".pylintrc"
     ".github/ISSUE_TEMPLATE/SOLODEV_*.md"
     ".github/SOLODEV_PULL_REQUEST_TEMPLATE.md"
+    ".github/workflows/auto-pr-update-docs.yml"
 )
 
 # コメント行を追加（まだなければ）

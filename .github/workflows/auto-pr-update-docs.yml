@@ -40,7 +40,7 @@ jobs:
           COMMITS=$(git log origin/main..HEAD --pretty=format:'- [%h](https://github.com/${{ github.repository }}/commit/%H) %s (%an)' --reverse)
           BODY="## Commit Logs\n\n$COMMITS"
           echo -e "$BODY" > body.txt
-          gh pr edit $PR_NUMBER --title "docs: Update solo dev documentation" --body-file body.txt
+          gh pr edit $PR_NUMBER --title "docs: Update SoloDev Documentation" --body-file body.txt
           echo "[LOG] Updated existing PR #$PR_NUMBER"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -52,7 +52,7 @@ jobs:
           COMMITS=$(git log origin/main..HEAD --pretty=format:'- [%h](https://github.com/${{ github.repository }}/commit/%H) %s (%an)' --reverse)
           BODY="## Commit Logs\n\n$COMMITS"
           echo -e "$BODY" > body.txt
-          gh pr create --base main --head ${{ github.ref_name }} --title "docs: Update solo dev documentation" --body-file body.txt
+          gh pr create --base main --head ${{ github.ref_name }} --title "docs: Update SoloDev Documentation" --body-file body.txt
           echo "[LOG] Created new PR"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
