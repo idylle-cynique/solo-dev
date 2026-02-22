@@ -21,7 +21,7 @@ jobs:
       - name: Check for existing PR
         id: pr
         run: |
-          PR_NUMBER=$(gh pr list --base main --head ${{ github.ref_name }} --json number --jq '.[0].number' | tr -d '\n')
+          PR_NUMBER=$(gh pr list --base main --head ${{ github.ref_name }} --json number --jq '.[0].number // empty' | tr -d '\n')
           if [ -n "$PR_NUMBER" ]; then
             echo "pr_exists=true" | tee -a $GITHUB_OUTPUT
             echo "pr_number=$PR_NUMBER" | tee -a $GITHUB_OUTPUT
