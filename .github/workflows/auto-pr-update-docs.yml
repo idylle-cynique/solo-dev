@@ -3,6 +3,7 @@ name: auto-pr-update-docs
 on:
   push:
     branches:
+      - feat/29/add-autogen-pr-workflow  # 一時的に現在のブランチを追加
       - update-solo-dev-docs
 
 concurrency:
