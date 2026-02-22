@@ -87,6 +87,15 @@ if [ -f "$TOOLS_DIR/.github/SOLODEV_PULL_REQUEST_TEMPLATE.md" ]; then
     echo "    ✓ Pull request template updated"
 fi
 
+# GitHub Workflows
+if [ -f "$TOOLS_DIR/.github/workflows/auto-pr-update-docs.yml" ]; then
+    mkdir -p .github/workflows || { echo "    ✗ ワークフローディレクトリの作成に失敗"; exit 1; }
+    cp -f "$TOOLS_DIR/.github/workflows/auto-pr-update-docs.yml" .github/workflows/auto-pr-update-docs.yml || {
+        echo "    ✗ ワークフローファイルのコピーに失敗"; exit 1;
+    }
+    echo "    ✓ Workflow auto-pr-update-docs.yml updated"
+fi
+
 # 設定ファイル (.pylintrc)
 if [ -f "$TOOLS_DIR/.pylintrc" ]; then
     if [ -L ".pylintrc" ]; then

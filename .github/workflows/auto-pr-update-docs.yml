@@ -1,0 +1,61 @@
+name: auto-pr-update-docs
+
+on:
+  push:
+    branches:
+      - update-solo-dev-docs
+
+concurrency:
+  group: update-docs-pr
+  cancel-in-progress: true
+
+jobs:
+  create-pr:
+    permissions:
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for existing PR
+        id: pr
+        run: |
+          PR_NUMBER=$(gh pr list --base main --head ${{ github.ref_name }} --json number --jq '.[0].number // empty' | tr -d '\n')
+          if [ -n "$PR_NUMBER" ]; then
+            echo "pr_exists=true" | tee -a $GITHUB_OUTPUT
+            echo "pr_number=$PR_NUMBER" | tee -a $GITHUB_OUTPUT
+          else
+            echo "pr_exists=false" | tee -a $GITHUB_OUTPUT
+            echo "pr_number=" | tee -a $GITHUB_OUTPUT
+          fi
+          # 出力値をログにも明示
+          echo "[LOG] pr_exists=$(if [ -n \"$PR_NUMBER\" ]; then echo true; else echo false; fi)"
+          echo "[LOG] pr_number=$PR_NUMBER"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate commit log
+        id: commits
+        run: |
+          git fetch origin main --depth=50
+          COMMITS=$(git log origin/main..HEAD --pretty=format:'- [%h](https://github.com/${{ github.repository }}/commit/%H) %s (%an)' --reverse)
+          {
+            echo "BODY<<EOF"
+            echo "## Commit Logs"
+            echo ""
+            echo "$COMMITS"
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
+
+      - name: Update or Create PR
+        run: |
+          if [ "${{ steps.pr.outputs.pr_exists }}" == "true" ]; then
+            gh pr edit ${{ steps.pr.outputs.pr_number }} --title "docs: Update SoloDev Documentation" --body "${{ steps.commits.outputs.BODY }}" --add-assignee "${{ github.actor }}"
+            echo "[LOG] Updated existing PR #${{ steps.pr.outputs.pr_number }}"
+          else
+            gh pr create --base main --head ${{ github.ref_name }} --title "docs: Update SoloDev Documentation" --body "${{ steps.commits.outputs.BODY }}" --assignee "${{ github.actor }}"
+            echo "[LOG] Created new PR"
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
