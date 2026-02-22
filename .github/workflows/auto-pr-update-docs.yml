@@ -51,10 +51,10 @@ jobs:
       - name: Update or Create PR
         run: |
           if [ "${{ steps.pr.outputs.pr_exists }}" == "true" ]; then
-            gh pr edit ${{ steps.pr.outputs.pr_number }} --title "docs: Update SoloDev Documentation" --body "${{ steps.commits.outputs.BODY }}"
+            gh pr edit ${{ steps.pr.outputs.pr_number }} --title "docs: Update SoloDev Documentation" --body "${{ steps.commits.outputs.BODY }}" --add-assignee "${{ github.actor }}"
             echo "[LOG] Updated existing PR #${{ steps.pr.outputs.pr_number }}"
           else
-            gh pr create --base main --head ${{ github.ref_name }} --title "docs: Update SoloDev Documentation" --body "${{ steps.commits.outputs.BODY }}"
+            gh pr create --base main --head ${{ github.ref_name }} --title "docs: Update SoloDev Documentation" --body "${{ steps.commits.outputs.BODY }}" --assignee "${{ github.actor }}"
             echo "[LOG] Created new PR"
           fi
         env:
