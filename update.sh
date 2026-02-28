@@ -1,10 +1,10 @@
 #!/bin/bash
-# Self Dev Facilitation 更新スクリプト
+# solo-dev 更新スクリプト
 
 set -e
 
 TOOLS_DIR=".dev-tools"
-REPO="idylle-cynique/self-dev-facilitation"
+REPO="idylle-cynique/solo-dev"
 
 # Migration function - run once to transition old naming to new naming
 migrate_templates_to_solodev_prefix() {
@@ -41,7 +41,7 @@ migrate_templates_to_solodev_prefix() {
     fi
 }
 
-echo "==> Self Dev Facilitation を更新しています..."
+echo "==> solo-dev を更新しています..."
 
 # tiged で強制上書き
 npx tiged "$REPO" "$TOOLS_DIR" --force

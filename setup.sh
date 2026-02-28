@@ -1,12 +1,12 @@
 #!/bin/bash
-# Self Dev Facilitation セットアップスクリプト
+# solo-dev セットアップスクリプト
 
 set -e
 
 TOOLS_DIR=".dev-tools"
-REPO="idylle-cynique/self-dev-facilitation"
+REPO="idylle-cynique/solo-dev"
 
-echo "==> Self Dev Facilitation をセットアップしています..."
+echo "==> solo-dev をセットアップしています..."
 
 # 1. tiged でファイルを取得
 echo "  - ファイルを取得中..."
@@ -105,9 +105,9 @@ ENTRIES=(
 )
 
 # コメント行を追加（まだなければ）
-if ! grep -q "^# Self Dev Facilitation" .gitignore; then
+if ! grep -q "^# solo-dev" .gitignore; then
     echo "" >> .gitignore
-    echo "# Self Dev Facilitation" >> .gitignore
+    echo "# solo-dev" >> .gitignore
 fi
 
 # 各エントリを確認して追加

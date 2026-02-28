@@ -1,4 +1,4 @@
-# self-dev-facilitation
+# solo-dev
 
 個人開発用の共通ツール・テンプレート集
 
@@ -23,13 +23,13 @@
 ローカルクローンを使用する場合（初回のみ）：
 
 ```bash
-git clone https://github.com/idylle-cynique/self-dev-facilitation.git ~/github/self-dev-facilitation
+git clone https://github.com/idylle-cynique/solo-dev.git ~/github/solo-dev
 ```
 
 プロジェクトのルートディレクトリで以下を実行：
 
 ```bash
-bash ~/github/self-dev-facilitation/setup.sh
+bash ~/github/solo-dev/setup.sh
 ```
 
 これにより以下が自動的に行われます：
@@ -50,7 +50,7 @@ bash .dev-tools/update.sh
 または直接：
 
 ```bash
-npx tiged idylle-cynique/self-dev-facilitation .dev-tools --force
+npx tiged idylle-cynique/solo-dev .dev-tools --force
 bash .dev-tools/utils/git/install-hooks.sh
 ```
 
@@ -87,7 +87,7 @@ bash .dev-tools/utils/git/install-hooks.sh
 このリポジトリ自体を更新した場合：
 
 ```bash
-cd ~/github/self-dev-facilitation
+cd ~/github/solo-dev
 git pull
 ```
 
@@ -112,7 +112,7 @@ brew install node
 再度セットアップスクリプトを実行してください：
 
 ```bash
-bash ~/github/self-dev-facilitation/setup.sh
+bash ~/github/solo-dev/setup.sh
 ```
 
 または更新スクリプトを実行：
