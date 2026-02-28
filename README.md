@@ -1,5 +1,7 @@
 # solo-dev
 
+<!-- 旧リポジトリ名: `self-dev-facilitation` -->
+
 個人開発用の共通ツール・テンプレート集
 
 ## 概要
