@@ -104,6 +104,11 @@ ENTRIES=(
     ".github/workflows/auto-pr-update-docs.yml"
 )
 
+# 旧セクション名を移行（まだなければ）
+if grep -q "^# Self Dev Facilitation" .gitignore 2>/dev/null; then
+    sed -i 's/^# Self Dev Facilitation$/# solo-dev/' .gitignore
+fi
+
 # コメント行を追加（まだなければ）
 if ! grep -q "^# solo-dev" .gitignore; then
     echo "" >> .gitignore

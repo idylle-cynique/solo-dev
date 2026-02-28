@@ -6,6 +6,14 @@ set -e
 TOOLS_DIR=".dev-tools"
 REPO="idylle-cynique/solo-dev"
 
+# Migration function - run once to rename .gitignore section header
+migrate_gitignore_section() {
+    if [ -f ".gitignore" ] && grep -q "^# Self Dev Facilitation" .gitignore; then
+        sed -i 's/^# Self Dev Facilitation$/# solo-dev/' .gitignore
+        echo "    Migrated: .gitignore section '# Self Dev Facilitation' → '# solo-dev'"
+    fi
+}
+
 # Migration function - run once to transition old naming to new naming
 migrate_templates_to_solodev_prefix() {
     local migrated=false
@@ -52,6 +60,7 @@ echo "  - テンプレートと設定ファイルを更新..."
 # GitHub Issue Templates
 if [ -d "$TOOLS_DIR/.github/ISSUE_TEMPLATE" ]; then
     # Run one-time migration from old naming to new naming
+    migrate_gitignore_section
     migrate_templates_to_solodev_prefix
 
     # Create directory if needed
