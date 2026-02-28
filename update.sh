@@ -1,10 +1,18 @@
 #!/bin/bash
-# Self Dev Facilitation 更新スクリプト
+# solo-dev 更新スクリプト
 
 set -e
 
 TOOLS_DIR=".dev-tools"
-REPO="idylle-cynique/self-dev-facilitation"
+REPO="idylle-cynique/solo-dev"
+
+# Migration function - run once to rename .gitignore section header
+migrate_gitignore_section() {
+    if [ -f ".gitignore" ] && grep -q "^# Self Dev Facilitation" .gitignore; then
+        sed -i 's/^# Self Dev Facilitation$/# solo-dev/' .gitignore
+        echo "    Migrated: .gitignore section '# Self Dev Facilitation' → '# solo-dev'"
+    fi
+}
 
 # Migration function - run once to transition old naming to new naming
 migrate_templates_to_solodev_prefix() {
@@ -41,13 +49,16 @@ migrate_templates_to_solodev_prefix() {
     fi
 }
 
-echo "==> Self Dev Facilitation を更新しています..."
+echo "==> solo-dev を更新しています..."
 
 # tiged で強制上書き
 npx tiged "$REPO" "$TOOLS_DIR" --force
 
 # ファイルを更新
 echo "  - テンプレートと設定ファイルを更新..."
+
+# One-time migrations
+migrate_gitignore_section
 
 # GitHub Issue Templates
 if [ -d "$TOOLS_DIR/.github/ISSUE_TEMPLATE" ]; then
