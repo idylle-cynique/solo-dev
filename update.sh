@@ -57,10 +57,12 @@ npx tiged "$REPO" "$TOOLS_DIR" --force
 # ファイルを更新
 echo "  - テンプレートと設定ファイルを更新..."
 
+# One-time migrations
+migrate_gitignore_section
+
 # GitHub Issue Templates
 if [ -d "$TOOLS_DIR/.github/ISSUE_TEMPLATE" ]; then
     # Run one-time migration from old naming to new naming
-    migrate_gitignore_section
     migrate_templates_to_solodev_prefix
 
     # Create directory if needed
