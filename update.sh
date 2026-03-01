@@ -62,20 +62,21 @@ migrate_gitignore_section
 migrate_templates_to_solodev_prefix
 
 # .gitignore にエントリを追加
-if [ -f .gitignore ]; then
-    ENTRIES=(
-        ".dev-tools/"
-    )
-    if ! grep -q "^# solo-dev" .gitignore; then
-        echo "" >> .gitignore
-        echo "# solo-dev" >> .gitignore
-    fi
-    for entry in "${ENTRIES[@]}"; do
-        if ! grep -qF "$entry" .gitignore; then
-            echo "$entry" >> .gitignore
-        fi
-    done
+if [ ! -f .gitignore ]; then
+    touch .gitignore
 fi
+ENTRIES=(
+    ".dev-tools/"
+)
+if ! grep -q "^# solo-dev" .gitignore; then
+    echo "" >> .gitignore
+    echo "# solo-dev" >> .gitignore
+fi
+for entry in "${ENTRIES[@]}"; do
+    if ! grep -qF "$entry" .gitignore; then
+        echo "$entry" >> .gitignore
+    fi
+done
 
 # GitHub Issue Templates
 if [ -d "$TOOLS_DIR/.github/ISSUE_TEMPLATE" ]; then
