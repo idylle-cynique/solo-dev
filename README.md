@@ -62,10 +62,11 @@ bash .dev-tools/utils/git/install-hooks.sh
 
 - `.github/ISSUE_TEMPLATE/SOLODEV_*.md` ← `.dev-tools/.github/ISSUE_TEMPLATE/`
 - `.github/SOLODEV_PULL_REQUEST_TEMPLATE.md` ← `.dev-tools/.github/SOLODEV_PULL_REQUEST_TEMPLATE.md`
+- `.github/workflows/auto-pr-update-docs.yml` ← `.dev-tools/.github/workflows/`
 - `.pylintrc` ← `.dev-tools/.pylintrc`
 - `.git/hooks/pre-push` ← Git フック
 
-これらは `.gitignore` で除外されるため、**リポジトリにコミットされません**。
+これらは取り込み先リポジトリにコミットして使用できます。`.dev-tools/` のみ `.gitignore` で除外されます。
 
 ## 管理テンプレート
 
@@ -82,7 +83,7 @@ bash .dev-tools/utils/git/install-hooks.sh
 1. **tiged** を使用してこのリポジトリの最新版を `.dev-tools/` にコピー
 2. テンプレートと設定ファイルを各プロジェクトにコピー
 3. 元ファイルは `.dev-tools/` 内に保持され、更新時に再コピー
-4. `.gitignore` で除外されるため、Git の追跡対象外
+4. `.dev-tools/` は `.gitignore` で除外され、コピーされたファイルはコミット対象
 
 ## このリポジトリの更新
 
