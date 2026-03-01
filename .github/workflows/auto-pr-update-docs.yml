@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - update-solo-dev-docs
-      - test/35/workflow  # TODO: merge 後に削除
+      - wf-test/35  # TODO: merge 後に削除
 
 concurrency:
   group: update-docs-pr
