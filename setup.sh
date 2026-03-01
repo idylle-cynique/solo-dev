@@ -98,10 +98,6 @@ fi
 # 除外対象のエントリ
 ENTRIES=(
     ".dev-tools/"
-    ".pylintrc"
-    ".github/ISSUE_TEMPLATE/SOLODEV_*.md"
-    ".github/SOLODEV_PULL_REQUEST_TEMPLATE.md"
-    ".github/workflows/auto-pr-update-docs.yml"
 )
 
 # 旧セクション名を移行（まだなければ）
